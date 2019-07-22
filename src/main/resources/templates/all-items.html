@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/layout">
+<head>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-md-4" th:if="${itemList.empty}">
+				<div class="card mb-4 box-shadow">
+					<div class="card-body">
+						<p class="card-text">No Items.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4" th:if="${role=='ROLE_SELLER'} and !${itemList.empty}">
+				<h3>Your Uploaded Items</h3>
+			</div>
+			<div class="col-md-4" th:if="${role=='ROLE_USER'} and !${itemList.empty}">
+				<h3>Recent Items</h3>
+			</div>
+			<br>
+		</div>
+		<div class="row">
+			<div class="col-md-4" th:each="item : ${itemList}">
+				<div class="card mb-4 box-shadow">
+					<img class="card-img-top" th:data-id="${item.itemLotNumber}"
+						data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
+						th:alt="${item.title}"
+						style="height: 225px; width: 100%; display: block;"
+						th:src="${item.imagePath}" data-holder-rendered="true" />
+					<div class="card-body">
+						<h4 class="card-title" th:text="${item.title}"></h4>
+						<p class="card-text" th:text="${item.artistName}"></p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group" th:if="${role}=='ROLE_SELLER'">
+								<a th:href="'/item/edit-item/' + ${item.itemLotNumber}"><button
+										type="button" class="btn btn-sm btn-outline-secondary">Edit</button></a>
+								<a th:href="'/item/delete-item/' + ${item.itemLotNumber}"><button
+										type="button" class="btn btn-sm btn-outline-secondary">Delete</button></a>
+							</div>
+							<div class="btn-group" th:if="${role}=='ROLE_USER'">
+
+								<button type="button" class="btn btn-primary btn-bid"
+									th:data-id="${item.itemLotNumber}">Open for Bid</button>
+
+							</div>
+							<small class="text-muted"
+								th:text="${item.aunctionStartDate} + '-' + ${item.aunctionEndDate}"></small>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- MODAL FOR BID ITEM -->
+			<div class="modal fade" id="bidItemModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLongTitle">Bid This
+								Item</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<form method="POST" th:action="@{/bid-item/save}"
+								th:object="${bidItem}" id="item-bid-form">
+								<div class="form-group" id="bid-amt-group">
+									<label for="recipient-name" class="col-form-label">Bid
+										Amount</label> <input type="text" class="form-control"
+										th:field="*{bidAmount}" id="bid-amt">
+								</div>
+								<input type="hidden" th:field="*{itemId}" id="itemId" />
+								<div class="form-group" id="message-group">
+									<label for="message-text" class="col-form-label">Message:</label>
+									<textarea class="form-control" th:field="*{message}"
+										id="message-text"></textarea>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" id="btn-bid-save">Save
+								changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- MODAL FOR SHOWING INFO OF BID ITEM BY USER  -->
+			<div class="modal fade" id="bidItemInfoModal" tabindex="-1"
+				role="dialog" aria-labelledby="exampleModalCenterTitle"
+				aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLongTitle">Bid Item
+								Info</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body" id="bid-item-info-body"></div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- MODAL FOR SHOWING ITEM INFO-->
+			<div class="modal fade" id="itemInfoModal" tabindex="-1"
+				role="dialog" aria-labelledby="exampleModalCenterTitle"
+				aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Item Information</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div id="item-info-1" class="container-fluid"></div>
+							<br>
+							<div id="item-info-2" class="container-fluid"></div>
+							<br>
+							<div id="item-info-3" class="container-fluid"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save
+								changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>

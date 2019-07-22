@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/layout">
+
+<head>
+</head>
+<body>
+	<div layout:fragment="content">
+		<form class="form-inline" method="post"
+			th:action="@{/category/add/save}" th:object="${category}">
+			<div class="form-group">
+				<label class="sr-only" for="categoryName">Category Name:</label> <input
+					type="text" class="form-control" id="categoryName"
+					th:field="*{categoryName}">
+			</div>
+
+			<div class="alert alert-danger" role="alert"
+				th:if="${#fields.hasErrors('categoryName')}">
+				<span th:errors="*{categoryName}"></span>
+			</div>
+
+			<div class="alert alert-danger" role="alert"
+				th:if="${error}">
+				<span th:text="${errorMessage}"></span>
+			</div>
+
+			<div class="custom-modal-footer modal-footer">
+
+				<button type="submit" class="btn btn-default" >Add Category</button>
+			</div>
+    		
+		</form>
+	</div>
+
+
+</body>
+</html>

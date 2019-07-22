@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Login</title>
+<link rel="stylesheet"
+	th:href="@{/vendor/simple-line-icons/css/simple-line-icons.css}">
+<link rel="stylesheet"
+	th:href="@{/vendor/font-awesome/css/fontawesome-all.min.css}">
+<link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+	<div class="page-wrapper flex-row align-items-center">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-5">
+					<div class="card p-4">
+						<div
+							class="card-header text-center text-uppercase h4 font-weight-light">
+							Register</div>
+
+						<form method="post" th:object="${newuser}"
+							th:action="@{/register/save}" id="register-user-form">
+						
+						<input type="hidden" name="role" th:value="${role}"/>
+						
+							<div class="card-body py-5">
+								<div class="form-group" id="user-name-group">
+									<label class="form-control-label">Username</label> <input
+										type="text" class="form-control" th:field="*{username}" id="username">
+								</div>
+				
+								<div class="form-group">
+									<label class="form-control-label">Email</label> <input
+										type="email" class="form-control" th:field="*{email}">
+								</div>
+
+								<div class="form-group" id="password-group">
+									<label class="form-control-label">Password</label> <input
+										type="password" class="form-control" th:field="*{password}" id="pass1">
+								</div>
+
+								<div class="form-group">
+									<label class="form-control-label">Confirm Password</label> <input
+										type="password" class="form-control" id="pass2">
+								</div>
+							</div>
+
+							<div class="card-footer">
+								<button type="submit" class="btn btn-success btn-block" id="register-btn">Create
+									Account</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+	<script th:src="@{/vendor/popper.js/popper.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/chart.js/chart.min.js}"></script>
+	<script th:src="@{/js/carbon.js}"></script>
+	<script th:src="@{/js/demo.js}"></script>
+	<script>
+	$(document).ready(function(){
+		var error_user_name = false;
+		var error_password = false;
+		
+		$("#username").focusout(function(event){
+			error_user_name = checkusername(event);
+			console
+			.log("Inside username focusout error_user_name: "
+					+ error_user_name);
+		});
+		
+		$("#pass2").focusout(function(){
+			checkPassword();
+		});
+		
+		$("#register-btn").click(function(event){
+			event.preventDefault();
+		
+			error_password = checkPassword();
+			
+			console.log("error_user_name "
+					+ error_user_name);
+			console.log("error_password "
+					+ error_password);
+			
+			if (error_user_name == false && error_password == false) {
+				console.log("if")
+				$("#register-user-form").submit();
+				return true;
+			} else {
+				console.log("INSIDE ELSE");
+				event.preventDefault();
+				event.stopPropagation()
+				return false;
+			}
+			
+		});
+		
+		function checkusername(event){
+			var flag = false;
+			var username = $("#username").val();
+			
+			if(username == ""){
+				$('#user-name-group').addClass('has-error');
+				$('#user-name-group').append(
+						'<span class="help-block">'
+								+ "Username cannot be empty" + '</span>');
+				flag = true;
+			}else{
+			
+			var url_check_username = "http://localhost:8080/checkuser?userName="+username;
+			$.ajax({
+				type : "GET",
+				dataType : 'json',
+				url : url_check_username,
+				async : false,
+				contentType : "application/json; charset=utf-8",
+				success : function(data, status, xhr) {
+					console.log(data);
+					if(data.status != 0){
+						$('#user-name-group').addClass('has-error');
+						$('#user-name-group').append(
+								'<span class="help-block">'
+										+ data.message + '</span>');
+						flag = true;
+					}else{
+						$('#user-name-group').removeClass('.has-error');
+						$('.help-block').remove();
+					}
+					
+				},
+				error : function(xhr, status, error) {
+					console.log(status);
+				}
+			});
+			}
+			event.preventDefault();
+			console.log("flag==> "+flag);
+			return flag;
+		}
+		
+		function checkPassword(){
+			var pass1 = $("#pass1").val();
+			var pass2 = $("#pass2").val();
+			
+			if(pass1 != pass2){
+				$('#password-group').addClass('has-error');
+				$('#password-group').append(
+						'<span class="help-block">'
+								+ "Input password must be identical" + '</span>');
+				return true;
+			}else{
+				$('#password-group').removeClass('.has-error');
+				$('.help-block').remove();
+				return false;
+			}
+		}
+	});	
+	</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/layout">
+
+<head>
+<title>Layout</title>
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+
+
+		<div class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="card p-4">
+							<div
+								class="card-body d-flex justify-content-between align-items-center">
+								<div>
+									<span class="h4 d-block font-weight-normal mb-2"
+										th:text="${itemCount}"></span> <span class="font-weight-light">Items</span>
+								</div>
+
+								<div class="h2 text-muted">
+									<i class="icon icon-people"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="card p-4">
+							<div
+								class="card-body d-flex justify-content-between align-items-center">
+								<div>
+									<span class="h4 d-block font-weight-normal mb-2" th:text="${totalRevenue}"></span>
+									<span class="font-weight-light">Auctions</span>
+								</div>
+
+								<div class="h2 text-muted">
+									<i class="icon icon-wallet"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="card p-4">
+							<div
+								class="card-body d-flex justify-content-between align-items-center">
+								<div>
+									<span class="h4 d-block font-weight-normal mb-2" th:text="${buyerCount}"></span> <span
+										class="font-weight-light">Buyer</span>
+								</div>
+
+								<div class="h2 text-muted">
+									<i class="icon icon-cloud-download"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="card p-4">
+							<div
+								class="card-body d-flex justify-content-between align-items-center">
+								<div>
+									<span class="h4 d-block font-weight-normal mb-2" th:text="${sellerCount}"></span> <span
+										class="font-weight-light">Seller</span>
+								</div>
+
+								<div class="h2 text-muted">
+									<i class="icon icon-clock"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

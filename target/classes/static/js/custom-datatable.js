@@ -1,0 +1,2 @@
+$('#bid-history').DataTable({
+});

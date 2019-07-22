@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/layout">
+
+<head>
+</head>
+<body>
+	<div layout:fragment="content">
+	
+	<div th:if="${bidItemList.empty}">
+				<div class="card mb-4 box-shadow">
+					<div class="card-body">
+						<p class="card-text">Your Bid History Looks Empty.</p>
+					</div>
+				</div>
+	</div>
+	
+		<table class="table" th:if="${!bidItemList.empty}" id="bid-history">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Item Name</th>
+					<th scope="col">Bid Amount</th>
+					<th scope="col">Message</th>
+					<th scope="col">Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="bidItemInfo,iter : ${bidItemList}">
+					<th scope="row" th:text="${iter.index+1}"></th>
+					<td th:text="${bidItemInfo.itemName}"></td>
+					<td th:text="${bidItemInfo.bidAmt}"></td>
+					<td th:text="${bidItemInfo.message}"></td>
+					<td th:text="${bidItemInfo.date}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
