@@ -2,6 +2,7 @@ package com.fortheby.admin.serviceimpl;
 
 import com.fortheby.admin.entity.Category;
 import com.fortheby.admin.repo.CategoryRepository;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,11 +32,17 @@ public class CategoryServiceImpl {
 			modelAndView.addObject("errorMessage", "already taken");
 			modelAndView.setViewName("admin/add-category");
 		} else {
-			modelAndView.setViewName("admin/index");
 			categoryRepo.save(newCategory);
+			modelAndView.setViewName("redirect:/admin");
 		}
 
 		return modelAndView;
 	}
 
+
+	public ModelAndView deleteCategory(int catId) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/admin");
+		categoryRepo.deleteByCategoryId(catId);
+		return modelAndView;
+	}
 }

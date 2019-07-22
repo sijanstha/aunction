@@ -42,6 +42,10 @@
 									th:data-id="${item.itemLotNumber}">Open for Bid</button>
 
 							</div>
+							<div class="btn-group" th:if="${role}=='ROLE_ADMIN'">
+								<a th:href="'/item/delete-item/' + ${item.itemLotNumber}"><button
+										type="button" class="btn btn-sm btn-outline-secondary">Delete</button></a>
+							</div>
 							<small class="text-muted"
 								th:text="${item.aunctionStartDate} + '-' + ${item.aunctionEndDate}"></small>
 						</div>

@@ -46,7 +46,10 @@ public class CategoryController {
 		return itemService.findAllItemsByCategoryId(categoryId,principal);
 	}
 	
-	
+	@GetMapping("delete/{catId}")
+	public ModelAndView delete(@PathVariable("catId") int catId) {
+		return categoryService.deleteCategory(catId);
+	}
 	
 	
 }

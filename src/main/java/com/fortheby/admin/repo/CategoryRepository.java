@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository("categoryRepo")
@@ -16,4 +17,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer>{
 	Category findByCategoryName(String categoryName);
 	
 	List<Category> findAll();
+
+	@Transactional
+	void deleteByCategoryId(int catId);
 }

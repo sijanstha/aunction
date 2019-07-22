@@ -80,3 +80,7 @@ body.loading .loading-modal {
 .img {
     width: 100%;
 }
+
+.fa-trash {
+    padding: 1.6em 0em;
+}
